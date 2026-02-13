@@ -25,8 +25,8 @@ background:white;
 animation:twinkle 2s infinite alternate;
 }
 @keyframes twinkle{
-from{opacity:0.2;}
-to{opacity:1;}
+0%{opacity:0.2;}
+100%{opacity:1;}
 }
 
 /* ESTRELLA FUGAZ */
@@ -43,25 +43,26 @@ animation:shoot 6s linear infinite;
 100%{top:100%;left:100%;opacity:0;}
 }
 
-/* CORAZÓN INICIAL */
-.heart{
+/* CORAZÓN INTERACTIVO */
+#corazon{
 position:fixed;
 top:50%;
 left:50%;
 transform:translate(-50%,-50%);
 font-size:80px;
 color:red;
-animation:expand 2s forwards;
+cursor:pointer;
 z-index:999;
+animation:latido 1s infinite alternate;
 }
-@keyframes expand{
-0%{transform:translate(-50%,-50%) scale(0);}
-100%{transform:translate(-50%,-50%) scale(5);opacity:0;}
+@keyframes latido{
+0%{transform:translate(-50%,-50%) scale(1);}
+100%{transform:translate(-50%,-50%) scale(1.2);}
 }
 
 /* CONTADOR */
 #contador{
-font-size:20px;
+font-size:22px;
 margin-top:15px;
 }
 
@@ -73,7 +74,6 @@ right:40px;
 font-size:35px;
 cursor:pointer;
 }
-
 .mensaje-luna{
 position:fixed;
 top:80px;
@@ -114,7 +114,7 @@ animation:explode 1s forwards;
 .galeria{
 position:relative;
 width:90%;
-max-width:400px;
+max-width:450px;
 height:500px;
 margin:30px auto;
 overflow:hidden;
@@ -141,18 +141,15 @@ transform:scale(1.05);
 
 <body>
 
-<div class="heart">❤️</div>
+<!-- CORAZÓN INTERACTIVO -->
+<div id="corazon">❤️</div>
 
 <h1>Julieta & Brayan 💖</h1>
 
-<p>
-Desde el 23/02/2025 a las 3:30 PM<br>
-Nuestro tiempo de relación:
-</p>
-
+<!-- CONTADOR DINÁMICO -->
 <div id="contador"></div>
 
-<!-- GALERIA CON IMAGENES SUELTAS -->
+<!-- GALERIA CON IMÁGENES SUELTAS -->
 <div class="galeria">
 <img src="foto1.jpg" class="activa">
 <img src="foto2.jpg">
@@ -166,27 +163,28 @@ Nuestro tiempo de relación:
 <img src="foto10.jpg">
 </div>
 
+<!-- LUNA -->
 <div id="luna">🌙</div>
 <div id="mensajeLuna" class="mensaje-luna"></div>
 
+<!-- MÚSICA -->
 <audio id="musica" loop>
 <source src="musica.m4a" type="audio/mp4">
 </audio>
 
 <script>
 
-/* MUSICA AL PRIMER TOQUE */
-document.addEventListener("click", function(){
+/* 🎵 CORAZÓN TOCADO = EMPEZAR MÚSICA */
+document.getElementById("corazon").onclick=function(){
 let audio=document.getElementById("musica");
-if(audio.paused){
 audio.play();
-}
-},{once:true});
+this.style.display="none"; // Corazón desaparece
+};
 
 /* MENSAJE LUNA */
 document.getElementById("luna").onclick=function(){
 document.getElementById("mensajeLuna").innerText=
-"La luna está celosa… porque tú brillas mucho más que ella ✨";
+"La luna está celosa… porque tú brillas más que ella ✨";
 };
 
 /* CREAR ESTRELLAS */
@@ -204,7 +202,7 @@ let shooting=document.createElement("div");
 shooting.className="shooting-star";
 document.body.appendChild(shooting);
 
-/* CONTADOR */
+/* CONTADOR DINÁMICO: TIEMPO JUNTOS */
 let inicio=new Date("2025-02-23T15:30:00");
 
 function actualizar(){
@@ -217,10 +215,7 @@ let horas=Math.floor(diff/3600)%24;
 let dias=Math.floor(diff/86400);
 
 document.getElementById("contador").innerHTML=
-dias+" días "+
-horas+" horas "+
-minutos+" minutos "+
-segundos+" segundos";
+dias+" días "+horas+" horas "+minutos+" minutos "+segundos+" segundos";
 
 /* FUEGOS CADA MINUTO */
 if(segundos==0){
@@ -237,7 +232,7 @@ setTimeout(()=>fw.remove(),1000);
 setInterval(actualizar,1000);
 actualizar();
 
-/* TE AMO MOVIENDOSE */
+/* TE AMO MOVIÉNDOSE */
 setInterval(()=>{
 let t=document.createElement("div");
 t.className="teamo";
@@ -248,7 +243,7 @@ document.body.appendChild(t);
 setTimeout(()=>t.remove(),3000);
 },8000);
 
-/* CARRUSEL */
+/* CARRUSEL DE FOTOS */
 let imagenes=document.querySelectorAll(".galeria img");
 let index=0;
 

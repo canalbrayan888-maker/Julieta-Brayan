@@ -7,134 +7,149 @@
 
 <style>
 body{
-margin:0;
-padding:0;
-background:black;
-color:white;
-font-family:'Courier New', cursive;
-text-align:center;
-overflow-x:hidden;
+  margin:0;
+  padding:0;
+  background: linear-gradient(to bottom, #0b0c2a, #1a1c47);
+  color:white;
+  font-family:'Courier New', cursive;
+  text-align:center;
+  overflow-x:hidden;
 }
 
 /* ESTRELLAS */
 .star{
-position:absolute;
-width:2px;
-height:2px;
-background:white;
-animation:twinkle 2s infinite alternate;
+  position:absolute;
+  width:2px;
+  height:2px;
+  background:white;
+  animation:twinkle 2s infinite alternate;
 }
 @keyframes twinkle{
-0%{opacity:0.2;}
-100%{opacity:1;}
+  0%{opacity:0.2;}
+  100%{opacity:1;}
 }
 
 /* ESTRELLA FUGAZ */
 .shooting-star{
-position:absolute;
-width:3px;
-height:3px;
-background:white;
-box-shadow:0 0 10px white;
-animation:shoot 6s linear infinite;
+  position:absolute;
+  width:3px;
+  height:3px;
+  background:white;
+  box-shadow:0 0 10px white;
+  animation:shoot 6s linear infinite;
 }
 @keyframes shoot{
-0%{top:-10%;left:-10%;opacity:1;}
-100%{top:100%;left:100%;opacity:0;}
+  0%{top:-10%;left:-10%;opacity:1;}
+  100%{top:100%;left:100%;opacity:0;}
 }
 
 /* CORAZÓN INTERACTIVO */
 #corazon{
-position:fixed;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-font-size:80px;
-color:red;
-cursor:pointer;
-z-index:999;
-animation:latido 1s infinite alternate;
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  font-size:80px;
+  color:red;
+  cursor:pointer;
+  z-index:999;
+  animation:expand 1.5s forwards;
 }
-@keyframes latido{
-0%{transform:translate(-50%,-50%) scale(1);}
-100%{transform:translate(-50%,-50%) scale(1.2);}
+@keyframes expand{
+  0%{transform:translate(-50%,-50%) scale(0);}
+  100%{transform:translate(-50%,-50%) scale(1);}
 }
 
 /* CONTADOR */
 #contador{
-font-size:22px;
-margin-top:15px;
+  font-size:22px;
+  margin-top:15px;
 }
 
 /* LUNA */
 #luna{
-position:fixed;
-top:40px;
-right:40px;
-font-size:35px;
-cursor:pointer;
+  position:fixed;
+  top:40px;
+  right:40px;
+  font-size:35px;
+  cursor:pointer;
 }
 .mensaje-luna{
-position:fixed;
-top:80px;
-right:40px;
-font-size:14px;
-color:lightyellow;
-max-width:200px;
+  position:fixed;
+  top:80px;
+  right:40px;
+  font-size:14px;
+  color:lightyellow;
+  max-width:200px;
 }
 
 /* TE AMO */
 .teamo{
-position:fixed;
-font-size:25px;
-color:pink;
-animation:fade 3s forwards;
+  position:fixed;
+  font-size:25px;
+  color:pink;
+  animation:fade 3s forwards;
 }
 @keyframes fade{
-0%{opacity:0;}
-50%{opacity:1;}
-100%{opacity:0;}
+  0%{opacity:0;}
+  50%{opacity:1;}
+  100%{opacity:0;}
 }
 
 /* FUEGOS */
 .firework{
-position:absolute;
-width:6px;
-height:6px;
-background:yellow;
-border-radius:50%;
-animation:explode 1s forwards;
+  position:absolute;
+  width:6px;
+  height:6px;
+  background:yellow;
+  border-radius:50%;
+  animation:explode 1s forwards;
 }
 @keyframes explode{
-0%{transform:scale(1);}
-100%{transform:scale(6);opacity:0;}
+  0%{transform:scale(1);}
+  100%{transform:scale(6);opacity:0;}
 }
 
-/* GALERIA */
+/* GALERIA HORIZONTAL DESLIZABLE */
 .galeria{
-position:relative;
-width:90%;
-max-width:450px;
-height:500px;
-margin:30px auto;
-overflow:hidden;
-border-radius:20px;
-box-shadow:0 0 25px rgba(255,192,203,0.6);
+  display:flex;
+  overflow-x:auto;
+  gap:10px;
+  padding:10px;
+  margin:30px 0;
+  scroll-behavior:smooth;
 }
-
 .galeria img{
-position:absolute;
-width:100%;
-height:100%;
-object-fit:cover;
-opacity:0;
-transition:opacity 1.5s ease-in-out, transform 6s ease;
-border-radius:20px;
+  height:300px;
+  border-radius:15px;
+  flex-shrink:0;
+  object-fit:cover;
+  box-shadow:0 0 15px rgba(255,192,203,0.6);
+  transition:transform 0.5s ease;
+}
+.galeria img:hover{
+  transform:scale(1.05);
 }
 
-.galeria img.activa{
-opacity:1;
-transform:scale(1.05);
+/* BOTÓN MENSAJE SECRETO */
+#btnMensaje{
+  margin-top:20px;
+  padding:10px 20px;
+  font-size:18px;
+  border:none;
+  border-radius:10px;
+  background:pink;
+  color:black;
+  cursor:pointer;
+}
+#mensajeSecreto{
+  display:none;
+  margin-top:15px;
+  font-size:18px;
+  color:lightyellow;
+  max-width:300px;
+  margin-left:auto;
+  margin-right:auto;
 }
 </style>
 </head>
@@ -149,9 +164,9 @@ transform:scale(1.05);
 <!-- CONTADOR DINÁMICO -->
 <div id="contador"></div>
 
-<!-- GALERIA CON IMÁGENES SUELTAS -->
+<!-- GALERIA HORIZONTAL -->
 <div class="galeria">
-<img src="foto1.jpg" class="activa">
+<img src="foto1.jpg">
 <img src="foto2.jpg">
 <img src="foto3.jpg">
 <img src="foto4.jpg">
@@ -162,6 +177,10 @@ transform:scale(1.05);
 <img src="foto9.jpg">
 <img src="foto10.jpg">
 </div>
+
+<!-- BOTÓN MENSAJE SECRETO -->
+<button id="btnMensaje">Mostrar mensaje secreto 💌</button>
+<div id="mensajeSecreto">Desde que te vi por primera vez supe que serías la persona que cambiaría mi destino, eres quien le ha dado sentido a mi vida y cada día me despierto sabiendo que me amas y que yo te amo cada vez más 💖</div>
 
 <!-- LUNA -->
 <div id="luna">🌙</div>
@@ -176,25 +195,31 @@ transform:scale(1.05);
 
 /* 🎵 CORAZÓN TOCADO = EMPEZAR MÚSICA */
 document.getElementById("corazon").onclick=function(){
-let audio=document.getElementById("musica");
-audio.play();
-this.style.display="none"; // Corazón desaparece
+  let audio=document.getElementById("musica");
+  audio.play();
+  this.style.display="none"; // desaparece corazón
+};
+
+/* BOTÓN MENSAJE SECRETO */
+document.getElementById("btnMensaje").onclick=function(){
+  let m=document.getElementById("mensajeSecreto");
+  m.style.display=(m.style.display==="none")?"block":"none";
 };
 
 /* MENSAJE LUNA */
 document.getElementById("luna").onclick=function(){
-document.getElementById("mensajeLuna").innerText=
-"La luna está celosa… porque tú brillas más que ella ✨";
+  document.getElementById("mensajeLuna").innerText=
+  "La luna está celosa… porque tú brillas más que ella ✨";
 };
 
 /* CREAR ESTRELLAS */
 for(let i=0;i<120;i++){
-let star=document.createElement("div");
-star.className="star";
-star.style.top=Math.random()*100+"%";
-star.style.left=Math.random()*100+"%";
-star.style.animationDuration=(Math.random()*2+1)+"s";
-document.body.appendChild(star);
+  let star=document.createElement("div");
+  star.className="star";
+  star.style.top=Math.random()*100+"%";
+  star.style.left=Math.random()*100+"%";
+  star.style.animationDuration=(Math.random()*2+1)+"s";
+  document.body.appendChild(star);
 }
 
 /* ESTRELLA FUGAZ */
@@ -206,52 +231,42 @@ document.body.appendChild(shooting);
 let inicio=new Date("2025-02-23T15:30:00");
 
 function actualizar(){
-let ahora=new Date();
-let diff=Math.floor((ahora-inicio)/1000);
+  let ahora=new Date();
+  let diff=Math.floor((ahora-inicio)/1000);
 
-let segundos=diff%60;
-let minutos=Math.floor(diff/60)%60;
-let horas=Math.floor(diff/3600)%24;
-let dias=Math.floor(diff/86400);
+  let segundos=diff%60;
+  let minutos=Math.floor(diff/60)%60;
+  let horas=Math.floor(diff/3600)%24;
+  let dias=Math.floor(diff/86400);
 
-document.getElementById("contador").innerHTML=
-dias+" días "+horas+" horas "+minutos+" minutos "+segundos+" segundos";
+  document.getElementById("contador").innerHTML=
+  dias+" días "+horas+" horas "+minutos+" minutos "+segundos+" segundos";
 
-/* FUEGOS CADA MINUTO */
-if(segundos==0){
-for(let i=0;i<12;i++){
-let fw=document.createElement("div");
-fw.className="firework";
-fw.style.top=Math.random()*100+"%";
-fw.style.left=Math.random()*100+"%";
-document.body.appendChild(fw);
-setTimeout(()=>fw.remove(),1000);
-}
-}
+  /* FUEGOS CADA MINUTO */
+  if(segundos==0){
+    for(let i=0;i<12;i++){
+      let fw=document.createElement("div");
+      fw.className="firework";
+      fw.style.top=Math.random()*100+"%";
+      fw.style.left=Math.random()*100+"%";
+      document.body.appendChild(fw);
+      setTimeout(()=>fw.remove(),1000);
+    }
+  }
 }
 setInterval(actualizar,1000);
 actualizar();
 
 /* TE AMO MOVIÉNDOSE */
 setInterval(()=>{
-let t=document.createElement("div");
-t.className="teamo";
-t.innerText="Te amo ❤️";
-t.style.top=Math.random()*90+"%";
-t.style.left=Math.random()*90+"%";
-document.body.appendChild(t);
-setTimeout(()=>t.remove(),3000);
+  let t=document.createElement("div");
+  t.className="teamo";
+  t.innerText="Te amo ❤️";
+  t.style.top=Math.random()*90+"%";
+  t.style.left=Math.random()*90+"%";
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(),3000);
 },8000);
-
-/* CARRUSEL DE FOTOS */
-let imagenes=document.querySelectorAll(".galeria img");
-let index=0;
-
-setInterval(()=>{
-imagenes[index].classList.remove("activa");
-index=(index+1)%imagenes.length;
-imagenes[index].classList.add("activa");
-},4000);
 
 </script>
 

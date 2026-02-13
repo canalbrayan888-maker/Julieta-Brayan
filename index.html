@@ -9,11 +9,11 @@
 body{
 margin:0;
 padding:0;
-overflow:hidden;
 background:black;
 color:white;
-font-family: 'Courier New', cursive;
+font-family:'Courier New', cursive;
 text-align:center;
+overflow-x:hidden;
 }
 
 /* ESTRELLAS */
@@ -36,22 +36,23 @@ width:3px;
 height:3px;
 background:white;
 box-shadow:0 0 10px white;
-animation:shoot 5s linear infinite;
+animation:shoot 6s linear infinite;
 }
 @keyframes shoot{
-0%{top:0;left:0;opacity:1;}
+0%{top:-10%;left:-10%;opacity:1;}
 100%{top:100%;left:100%;opacity:0;}
 }
 
 /* CORAZÓN INICIAL */
 .heart{
-position:absolute;
+position:fixed;
 top:50%;
 left:50%;
 transform:translate(-50%,-50%);
 font-size:80px;
 color:red;
 animation:expand 2s forwards;
+z-index:999;
 }
 @keyframes expand{
 0%{transform:translate(-50%,-50%) scale(0);}
@@ -61,12 +62,30 @@ animation:expand 2s forwards;
 /* CONTADOR */
 #contador{
 font-size:20px;
-margin-top:20px;
+margin-top:15px;
+}
+
+/* LUNA */
+#luna{
+position:fixed;
+top:40px;
+right:40px;
+font-size:35px;
+cursor:pointer;
+}
+
+.mensaje-luna{
+position:fixed;
+top:80px;
+right:40px;
+font-size:14px;
+color:lightyellow;
+max-width:200px;
 }
 
 /* TE AMO */
-#teamo{
-position:absolute;
+.teamo{
+position:fixed;
 font-size:25px;
 color:pink;
 animation:fade 3s forwards;
@@ -77,35 +96,45 @@ animation:fade 3s forwards;
 100%{opacity:0;}
 }
 
-/* LUNA */
-#luna{
-position:absolute;
-top:50px;
-right:50px;
-font-size:40px;
-cursor:pointer;
-}
-
-.mensaje-luna{
-position:absolute;
-top:100px;
-right:50px;
-font-size:16px;
-color:lightyellow;
-}
-
 /* FUEGOS */
 .firework{
 position:absolute;
-width:5px;
-height:5px;
+width:6px;
+height:6px;
 background:yellow;
 border-radius:50%;
 animation:explode 1s forwards;
 }
 @keyframes explode{
 0%{transform:scale(1);}
-100%{transform:scale(5);opacity:0;}
+100%{transform:scale(6);opacity:0;}
+}
+
+/* GALERIA */
+.galeria{
+position:relative;
+width:90%;
+max-width:400px;
+height:500px;
+margin:30px auto;
+overflow:hidden;
+border-radius:20px;
+box-shadow:0 0 25px rgba(255,192,203,0.6);
+}
+
+.galeria img{
+position:absolute;
+width:100%;
+height:100%;
+object-fit:cover;
+opacity:0;
+transition:opacity 1.5s ease-in-out, transform 6s ease;
+border-radius:20px;
+}
+
+.galeria img.activa{
+opacity:1;
+transform:scale(1.05);
 }
 </style>
 </head>
@@ -123,6 +152,20 @@ Nuestro tiempo de relación:
 
 <div id="contador"></div>
 
+<!-- GALERIA CON IMAGENES SUELTAS -->
+<div class="galeria">
+<img src="foto1.jpg" class="activa">
+<img src="foto2.jpg">
+<img src="foto3.jpg">
+<img src="foto4.jpg">
+<img src="foto5.jpg">
+<img src="foto6.jpg">
+<img src="foto7.jpg">
+<img src="foto8.jpg">
+<img src="foto9.jpg">
+<img src="foto10.jpg">
+</div>
+
 <div id="luna">🌙</div>
 <div id="mensajeLuna" class="mensaje-luna"></div>
 
@@ -132,7 +175,7 @@ Nuestro tiempo de relación:
 
 <script>
 
-/* 🎵 MUSICA AL PRIMER TOQUE */
+/* MUSICA AL PRIMER TOQUE */
 document.addEventListener("click", function(){
 let audio=document.getElementById("musica");
 if(audio.paused){
@@ -140,14 +183,14 @@ audio.play();
 }
 },{once:true});
 
-/* 🌙 MENSAJE LUNA */
+/* MENSAJE LUNA */
 document.getElementById("luna").onclick=function(){
 document.getElementById("mensajeLuna").innerText=
 "La luna está celosa… porque tú brillas mucho más que ella ✨";
 };
 
-/* ⭐ CREAR ESTRELLAS */
-for(let i=0;i<100;i++){
+/* CREAR ESTRELLAS */
+for(let i=0;i<120;i++){
 let star=document.createElement("div");
 star.className="star";
 star.style.top=Math.random()*100+"%";
@@ -156,12 +199,12 @@ star.style.animationDuration=(Math.random()*2+1)+"s";
 document.body.appendChild(star);
 }
 
-/* ⭐ ESTRELLA FUGAZ */
+/* ESTRELLA FUGAZ */
 let shooting=document.createElement("div");
 shooting.className="shooting-star";
 document.body.appendChild(shooting);
 
-/* ⏳ CONTADOR TIPO RELOJ REAL */
+/* CONTADOR */
 let inicio=new Date("2025-02-23T15:30:00");
 
 function actualizar(){
@@ -179,9 +222,9 @@ horas+" horas "+
 minutos+" minutos "+
 segundos+" segundos";
 
-/* 🎆 FUEGOS CADA MINUTO */
+/* FUEGOS CADA MINUTO */
 if(segundos==0){
-for(let i=0;i<10;i++){
+for(let i=0;i<12;i++){
 let fw=document.createElement("div");
 fw.className="firework";
 fw.style.top=Math.random()*100+"%";
@@ -194,16 +237,26 @@ setTimeout(()=>fw.remove(),1000);
 setInterval(actualizar,1000);
 actualizar();
 
-/* 💖 TE AMO MOVIÉNDOSE */
+/* TE AMO MOVIENDOSE */
 setInterval(()=>{
 let t=document.createElement("div");
-t.id="teamo";
+t.className="teamo";
 t.innerText="Te amo ❤️";
-t.style.top=Math.random()*80+"%";
-t.style.left=Math.random()*80+"%";
+t.style.top=Math.random()*90+"%";
+t.style.left=Math.random()*90+"%";
 document.body.appendChild(t);
 setTimeout(()=>t.remove(),3000);
 },8000);
+
+/* CARRUSEL */
+let imagenes=document.querySelectorAll(".galeria img");
+let index=0;
+
+setInterval(()=>{
+imagenes[index].classList.remove("activa");
+index=(index+1)%imagenes.length;
+imagenes[index].classList.add("activa");
+},4000);
 
 </script>
 

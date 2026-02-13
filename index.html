@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Julieta & Brayan 💖</title>
+
+<style>
+body{
+margin:0;
+padding:0;
+background:linear-gradient(to bottom,#050510,#0b0b2a);
+color:white;
+font-family:Arial,Helvetica,sans-serif;
+text-align:center;
+overflow:hidden;
+}
+
+/* ESTRELLAS PARPADEANDO */
+.stars{
+position:fixed;
+width:100%;
+height:100%;
+background:black;
+z-index:-3;
+overflow:hidden;
+}
+
+.star{
+position:absolute;
+width:2px;
+height:2px;
+background:white;
+border-radius:50%;
+animation:blink 2s infinite alternate;
+}
+
+@keyframes blink{
+from{opacity:0.2;}
+to{opacity:1;}
+}
+
+/* ESTRELLA FUGAZ */
+.shooting-star{
+position:absolute;
+width:3px;
+height:3px;
+background:white;
+box-shadow:0 0 10px white;
+animation:shoot 2s linear forwards;
+}
+
+@keyframes shoot{
+0%{transform:translate(0,0);opacity:1;}
+100%{transform:translate(-600px,600px);opacity:0;}
+}
+
+/* LUNA */
+.moon{
+position:absolute;
+top:20px;
+right:20px;
+width:60px;
+height:60px;
+background:radial-gradient(circle,#fff,#ddd);
+border-radius:50%;
+box-shadow:0 0 20px white;
+cursor:pointer;
+z-index:2;
+}
+
+.moon-text{
+position:fixed;
+top:30%;
+left:50%;
+transform:translate(-50%,-50%);
+background:rgba(0,0,0,0.8);
+padding:15px;
+border-radius:15px;
+display:none;
+}
+
+/* TITULO */
+h1{
+margin-top:100px;
+font-size:28px;
+}
+
+/* CONTADOR */
+.counter{
+margin-top:20px;
+font-size:20px;
+cursor:pointer;
+}
+
+/* CARRUSEL */
+.carousel{
+width:90%;
+max-width:400px;
+margin:20px auto;
+overflow:hidden;
+border-radius:20px;
+}
+
+.carousel img{
+width:100%;
+display:none;
+border-radius:20px;
+animation:fadeZoom 6s ease-in-out;
+}
+
+@keyframes fadeZoom{
+0%{opacity:0; transform:scale(1);}
+20%{opacity:1;}
+80%{opacity:1; transform:scale(1.05);}
+100%{opacity:0;}
+}
+
+/* TE AMO */
+.love-message{
+position:fixed;
+font-size:28px;
+color:#ff4d6d;
+animation:fadeLove 5s ease;
+}
+
+@keyframes fadeLove{
+0%{opacity:0;}
+30%{opacity:1;}
+70%{opacity:1;}
+100%{opacity:0;}
+}
+
+/* FUEGOS */
+.firework{
+position:fixed;
+width:6px;
+height:6px;
+border-radius:50%;
+animation:explode 1s ease-out forwards;
+}
+
+@keyframes explode{
+0%{transform:scale(1);opacity:1;}
+100%{transform:scale(8);opacity:0;}
+}
+
+button{
+margin-top:20px;
+padding:10px 15px;
+background:#ff4d6d;
+border:none;
+border-radius:20px;
+color:white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="stars" id="stars"></div>
+<div class="moon" onclick="showMoonText()"></div>
+<div class="moon-text" id="moonText">
+La luna está celosa… porque tú brillas más que ella ✨
+</div>
+
+<h1>Julieta & Brayan 💖</h1>
+
+<div class="counter" id="counter" onclick="launchFireworks()"></div>
+
+<div class="carousel">
+<img src="foto1.jpg">
+<img src="foto2.jpg">
+<img src="foto3.jpg">
+<img src="foto4.jpg">
+<img src="foto5.jpg">
+<img src="foto6.jpg">
+<img src="foto7.jpg">
+<img src="foto8.jpg">
+<img src="foto9.jpg">
+<img src="foto10.jpg">
+</div>
+
+<button onclick="showSecret()">Mensaje Secreto 💌</button>
+
+<div id="secretText" style="display:none;margin:20px;">
+Desde el primer instante en que te vi, supe que no eras casualidad, sino destino.
+Llegaste para darle sentido y luz a mi vida.
+Cada amanecer es más hermoso porque sé que me amas…
+y yo te amo cada día más, infinitamente. 💖
+</div>
+
+<audio id="musica" src="musica.m4a" loop></audio>
+
+<script>
+
+/* CREAR ESTRELLAS */
+const starsContainer = document.getElementById("stars");
+for(let i=0;i<120;i++){
+let star=document.createElement("div");
+star.className="star";
+star.style.top=Math.random()*100+"%";
+star.style.left=Math.random()*100+"%";
+star.style.animationDuration=(1+Math.random()*3)+"s";
+starsContainer.appendChild(star);
+}
+
+/* ESTRELLA FUGAZ */
+setInterval(()=>{
+let s=document.createElement("div");
+s.className="shooting-star";
+s.style.top=Math.random()*50+"%";
+s.style.left="100%";
+document.body.appendChild(s);
+setTimeout(()=>{s.remove();},2000);
+},8000);
+
+/* CONTADOR */
+const startDate=new Date("2025-02-23T03:30:00").getTime();
+function updateCounter(){
+let now=new Date().getTime();
+let diff=now-startDate;
+
+let seconds=Math.floor(diff/1000)%60;
+let minutes=Math.floor(diff/60000)%60;
+let hours=Math.floor(diff/3600000)%24;
+let days=Math.floor(diff/86400000);
+
+document.getElementById("counter").innerHTML=
+"💘 Tiempo de relación 💘<br><br>"+
+days+" días<br>"+
+hours+" horas<br>"+
+minutes+" minutos<br>"+
+seconds+" segundos";
+}
+setInterval(updateCounter,1000);
+updateCounter();
+
+/* CARRUSEL */
+let slideIndex=0;
+const slides=document.querySelectorAll(".carousel img");
+function showSlides(){
+slides.forEach(s=>s.style.display="none");
+slideIndex++;
+if(slideIndex>slides.length){slideIndex=1;}
+slides[slideIndex-1].style.display="block";
+setTimeout(showSlides,6000);
+}
+showSlides();
+
+/* TE AMO CAMBIA LUGAR */
+setInterval(()=>{
+let msg=document.createElement("div");
+msg.className="love-message";
+msg.innerHTML="Te amo 💖";
+msg.style.top=Math.random()*80+"%";
+msg.style.left=Math.random()*80+"%";
+document.body.appendChild(msg);
+setTimeout(()=>{msg.remove();},5000);
+},20000);
+
+/* FUEGOS */
+function launchFireworks(){
+for(let i=0;i<25;i++){
+let fw=document.createElement("div");
+fw.className="firework";
+fw.style.left=Math.random()*100+"vw";
+fw.style.top=Math.random()*80+"vh";
+fw.style.background=`hsl(${Math.random()*360},100%,70%)`;
+document.body.appendChild(fw);
+setTimeout(()=>{fw.remove();},1000);
+}
+}
+
+/* LUNA */
+function showMoonText(){
+let text=document.getElementById("moonText");
+text.style.display="block";
+setTimeout(()=>{text.style.display="none";},4000);
+}
+
+/* MENSAJE */
+function showSecret(){
+document.getElementById("secretText").style.display="block";
+}
+
+/* MÚSICA (primer toque activa) */
+document.body.addEventListener("click",()=>{
+document.getElementById("musica").play();
+},{once:true});
+
+</script>
+
+</body>
+</html>
